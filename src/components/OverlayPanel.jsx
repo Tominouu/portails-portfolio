@@ -14,7 +14,19 @@ export default function OverlayPanel({ openPortal, onClose }){
 
   return (
     <div className="overlay" role="dialog" aria-modal="true">
-      <div className="panel">
+      <div className="panel" style={{
+      width:'min(920px,94%)',
+      maxHeight:'86%',
+      overflow:'auto',
+      padding:20,
+      borderRadius:14,
+      background:'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
+      border:'1px solid rgba(255,255,255,0.03)',
+      boxShadow:'0 8px 40px rgba(0,0,0,0.6)',
+      color:'#e6f7ff',
+      pointerEvents:'auto',
+      backdropFilter:'blur(12px)'
+    }}>
         <header>
           <div>
             <h2>{openPortal === 'projects' ? 'Projets' : openPortal === 'about' ? 'À propos' : 'Compétences'}</h2>
