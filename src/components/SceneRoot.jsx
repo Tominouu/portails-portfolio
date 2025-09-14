@@ -6,6 +6,8 @@ import Portal from './Portal'
 import OverlayPanel from './OverlayPanel'
 import * as THREE from 'three'
 
+
+const initialCameraPos = [0, 2.5, 6]
 // ----------------------------
 // Hook audio
 function useAudio(url, loop=false, volume=0.3){
@@ -85,6 +87,34 @@ export default function SceneRoot() {
     setWarpTarget(pos)
     setActivePortal(id)
   }
+
+useEffect(() => {
+const handleKey = (e) => {
+    if (e.key === 'Escape') {
+    setWarpTarget(initialCameraPos)
+    setFluxPoints(null)
+    setActivePortal(null)
+    }
+}
+window.addEventListener('keydown', handleKey)
+return () => window.removeEventListener('keydown', handleKey)
+}, [])
+
+{activePortal && (
+  <Html center>
+    <OverlayPanel onClose={()=>{
+      setWarpTarget(initialCameraPos)
+      setFluxPoints(null)
+      setActivePortal(null)
+    }}>
+      {activePortal === 'projects' && <div>🛠️ Mes Projets</div>}
+      {activePortal === 'about' && <div>ℹ️ À propos de moi</div>}
+      {activePortal === 'skills' && <div>💡 Mes Compétences</div>}
+    </OverlayPanel>
+  </Html>
+)}
+
+
 
   return (
     <Canvas shadows camera={{ position: [0, 2.5, 6], fov: 50 }}>

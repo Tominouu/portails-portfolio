@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 
-export default function OverlayPanel({ children }) {
+export default function OverlayPanel({ children, onClose }) { // <- ajouter onClose ici
   const ref = useRef()
+
   useEffect(() => {
     gsap.fromTo(
       ref.current,
@@ -37,6 +38,30 @@ export default function OverlayPanel({ children }) {
       <div style={{ position: 'relative', zIndex: 2 }}>
         {children}
       </div>
+
+      {/* Bouton Retour */}
+      {onClose && (
+        <div style={{ marginTop: 16, textAlign: 'center' }}>
+          <button
+            onClick={onClose} // <- utilise maintenant la prop
+            style={{
+              padding: '6px 12px',
+              borderRadius: 8,
+              border: '1px solid #00e6ff',
+              background: 'rgba(0,0,0,0.3)',
+              color: '#00e6ff',
+              cursor: 'pointer',
+              fontFamily: '"Orbitron",sans-serif',
+              fontSize: 12,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 8px #00e6ff'}
+            onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+          >
+            Retour
+          </button>
+        </div>
+      )}
     </div>
   )
 }
