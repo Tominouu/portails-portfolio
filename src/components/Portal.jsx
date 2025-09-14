@@ -63,7 +63,7 @@ export default function Portal({ position=[0,0,0], label='Portal', id, onOpen })
         onClick={(e)=>{ e.stopPropagation(); if(onOpen) onOpen(id) }}
         castShadow
       >
-        <torusBufferGeometry args={[1.0, 0.28, 32, 128]} />
+        <torusGeometry args={[1.0, 0.28, 32, 128]} />
         <ShaderPortalMaterial />
       </mesh>
 
