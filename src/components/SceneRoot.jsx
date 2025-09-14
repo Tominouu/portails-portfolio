@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Html, Environment, Line } from '@react-three/drei'
 import gsap from 'gsap'
 import Portal from './Portal'
+import OverlayPanel from './OverlayPanel'
 import * as THREE from 'three'
 
 // ----------------------------
@@ -32,7 +33,6 @@ function Particles({ count = 200 }) {
   useFrame(({ mouse }) => {
     if(meshRef.current){
       meshRef.current.rotation.y += 0.001
-      // Particules réactives au mouvement de la souris
       meshRef.current.position.x = mouse.x * 5
       meshRef.current.position.z = mouse.y * 5
     }
@@ -71,9 +71,10 @@ function LightFlux({ start, end }) {
 
 // ----------------------------
 // Scene principale
-export default function SceneRoot({ onOpenPortal }) {
+export default function SceneRoot() {
   const [warpTarget, setWarpTarget] = useState(null)
   const [fluxPoints, setFluxPoints] = useState(null)
+  const [activePortal, setActivePortal] = useState(null)
 
   // Audio de fond
   useAudio('/ambient.mp3', true, 0.2)
@@ -82,7 +83,7 @@ export default function SceneRoot({ onOpenPortal }) {
   const handlePortalClick = (id, pos) => {
     setFluxPoints([pos, [0,2,6]]) // du portail vers caméra
     setWarpTarget(pos)
-    if(onOpenPortal) onOpenPortal(id)
+    setActivePortal(id)
   }
 
   return (
@@ -121,6 +122,17 @@ export default function SceneRoot({ onOpenPortal }) {
 
       {/* Caméra dynamique */}
       <CameraWarp target={warpTarget} />
+
+      {/* Overlay UI */}
+      {activePortal && (
+        <Html center>
+          <OverlayPanel>
+            {activePortal === 'projects' && <div style={{fontSize:16}}>🛠️ Mes Projets</div>}
+            {activePortal === 'about' && <div style={{fontSize:16}}>ℹ️ À propos de moi</div>}
+            {activePortal === 'skills' && <div style={{fontSize:16}}>💡 Mes Compétences</div>}
+          </OverlayPanel>
+        </Html>
+      )}
 
       {/* Contrôle */}
       <OrbitControls enablePan={false} enableZoom={true} minPolarAngle={0} maxPolarAngle={Math.PI/2.1} />

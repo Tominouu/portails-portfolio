@@ -1,73 +1,41 @@
-import React, { useEffect } from 'react'
-import { projects } from '../data/projects'
+import React, { useRef, useEffect } from 'react'
+import gsap from 'gsap'
 
-export default function OverlayPanel({ openPortal, onClose }){
-  useEffect(()=>{
-    function handler(e){
-      if(e.key === 'Escape') onClose && onClose()
-    }
-    window.addEventListener('keydown', handler)
-    return ()=> window.removeEventListener('keydown', handler)
-  },[onClose])
-
-  if(!openPortal) return null
+export default function OverlayPanel({ children }) {
+  const ref = useRef()
+  useEffect(() => {
+    gsap.fromTo(
+      ref.current,
+      { opacity: 0, scale: 0.8, y: 20 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'power3.out' }
+    )
+  }, [])
 
   return (
-    <div className="overlay" role="dialog" aria-modal="true">
-      <div className="panel" style={{
-      width:'min(920px,94%)',
-      maxHeight:'86%',
-      overflow:'auto',
-      padding:20,
-      borderRadius:14,
-      background:'linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))',
-      border:'1px solid rgba(255,255,255,0.03)',
-      boxShadow:'0 8px 40px rgba(0,0,0,0.6)',
-      color:'#e6f7ff',
-      pointerEvents:'auto',
-      backdropFilter:'blur(12px)'
-    }}>
-        <header>
-          <div>
-            <h2>{openPortal === 'projects' ? 'Projets' : openPortal === 'about' ? 'À propos' : 'Compétences'}</h2>
-            <div style={{opacity:0.8,fontSize:13}}>
-              {openPortal === 'projects' ? 'Explore mes travaux récents' : openPortal === 'about' ? 'Qui je suis' : 'Tech & mini-demos'}
-            </div>
-          </div>
-          <div>
-            <button className="btn" onClick={onClose}>Retour</button>
-          </div>
-        </header>
-
-        <div className="content">
-          {openPortal === 'projects' && (
-            <div>
-              {projects.map(p=>(
-                <article key={p.id} style={{padding:'12px 0',borderBottom:'1px solid rgba(255,255,255,0.03)'}}>
-                  <h3 style={{margin:'0 0 6px 0'}}>{p.title}</h3>
-                  <p style={{margin:0,color:'rgba(255,255,255,0.8)'}}>{p.desc}</p>
-                </article>
-              ))}
-            </div>
-          )}
-
-          {openPortal === 'about' && (
-            <div>
-              <p>Salut — je suis Tom, futur développeur fullstack. J’aime créer des expériences interactives et des interfaces immersives.</p>
-              <p>Ce prototype montre un hub avec des portails et des transitions shader/3D.</p>
-            </div>
-          )}
-
-          {openPortal === 'skills' && (
-            <div>
-              <ul>
-                <li>Front: React, R3F, Three.js</li>
-                <li>Back: Node, Express</li>
-                <li>Outils: GSAP, GLSL, Vite</li>
-              </ul>
-            </div>
-          )}
-        </div>
+    <div
+      ref={ref}
+      style={{
+        position: 'relative',
+        width: 'min(900px,90%)',
+        maxHeight: '85%',
+        overflowY: 'auto',
+        padding: 24,
+        borderRadius: 16,
+        background: 'rgba(10,10,12,0.45)',
+        border: '1px solid rgba(0,255,255,0.1)',
+        boxShadow: '0 0 20px rgba(0,255,255,0.2), 0 0 40px rgba(0,255,255,0.1)',
+        color: '#a0f0ff',
+        fontFamily: '"Orbitron", sans-serif',
+        fontSize: 14,
+        letterSpacing: '0.5px',
+        lineHeight: 1.6,
+        backdropFilter: 'blur(12px)',
+        transition: 'all 0.3s ease',
+        pointerEvents: 'auto'
+      }}
+    >
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        {children}
       </div>
     </div>
   )

@@ -5,14 +5,9 @@ import * as THREE from 'three'
 import { shaderMaterial } from '@react-three/drei'
 import { gsap } from 'gsap'
 
-
-const hoverSound = new Audio('/hover.mp3')
-const clickSound = new Audio('/click.mp3')
-
 // Shader Material
 const PortalShaderMaterial = shaderMaterial(
   { uTime:0, uColor:new THREE.Color(0x00e6ff) },
-  // vertex
   `
   varying vec2 vUv;
   void main(){
@@ -20,7 +15,6 @@ const PortalShaderMaterial = shaderMaterial(
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
   }
   `,
-  // fragment
   `
   precision mediump float;
   uniform float uTime;
@@ -32,7 +26,6 @@ const PortalShaderMaterial = shaderMaterial(
     float r = length(uv);
     float angle = atan(uv.y, uv.x);
     angle += sin(r*10.0 - uTime*2.0)*0.3;
-    vec2 newUv = vec2(cos(angle), sin(angle))*r + 0.5;
     float glow = smoothstep(0.6,0.1,r) + 0.5*sin(uTime*4.0 + r*12.0);
     vec3 col = mix(vec3(0.01), uColor, glow);
     float rim = smoothstep(0.4,0.35,r);
@@ -67,8 +60,8 @@ export default function Portal({ position=[0,0,0], label='Portal', id, onOpen })
     <group position={position}>
       <mesh
         ref={meshRef}
-        onPointerOver={(e)=>{ e.stopPropagation(); setHovered(true); setScale(1.08); hoverSound.play() }}
-        onPointerOut={(e)=>{ e.stopPropagation(); setHovered(false); setScale(1); clickSound.play() }}
+        onPointerOver={(e)=>{ e.stopPropagation(); setHovered(true); setScale(1.08) }}
+        onPointerOut={(e)=>{ e.stopPropagation(); setHovered(false); setScale(1) }}
         onClick={(e)=>{ e.stopPropagation(); if(onOpen) onOpen(id, position) }}
       >
         <torusGeometry args={[1,0.28,32,128]} />
@@ -81,12 +74,13 @@ export default function Portal({ position=[0,0,0], label='Portal', id, onOpen })
           borderRadius:10,
           background:'rgba(10,10,12,0.45)',
           border:'1px solid rgba(255,255,255,0.03)',
-          color:'#cfefff',
-          fontSize:13,
-          minWidth:64,
-          textAlign:'center',
-          backdropFilter:'blur(6px)'
-        }}>{label}</div>
+          color:'#a0f0ff',
+          fontFamily:'"Orbitron",sans-serif',
+          fontSize:12,
+          textAlign:'center'
+        }}>
+          {label}
+        </div>
       </Html>
     </group>
   )
