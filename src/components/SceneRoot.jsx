@@ -79,7 +79,7 @@ export default function SceneRoot() {
   const [activePortal, setActivePortal] = useState(null)
 
   // Audio de fond
-  useAudio('/ambient.mp3', true, 0.2)
+  useAudio('/songs/ambient.mp3', true, 0.2)
 
   // Callback pour les portails
   const handlePortalClick = (id, pos) => {
