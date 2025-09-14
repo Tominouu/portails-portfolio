@@ -5,6 +5,10 @@ import * as THREE from 'three'
 import { shaderMaterial } from '@react-three/drei'
 import { gsap } from 'gsap'
 
+
+const hoverSound = new Audio('/hover.mp3')
+const clickSound = new Audio('/click.mp3')
+
 // Shader Material
 const PortalShaderMaterial = shaderMaterial(
   { uTime:0, uColor:new THREE.Color(0x00e6ff) },
@@ -63,8 +67,8 @@ export default function Portal({ position=[0,0,0], label='Portal', id, onOpen })
     <group position={position}>
       <mesh
         ref={meshRef}
-        onPointerOver={(e)=>{ e.stopPropagation(); setHovered(true); setScale(1.08) }}
-        onPointerOut={(e)=>{ e.stopPropagation(); setHovered(false); setScale(1) }}
+        onPointerOver={(e)=>{ e.stopPropagation(); setHovered(true); setScale(1.08); hoverSound.play() }}
+        onPointerOut={(e)=>{ e.stopPropagation(); setHovered(false); setScale(1); clickSound.play() }}
         onClick={(e)=>{ e.stopPropagation(); if(onOpen) onOpen(id, position) }}
       >
         <torusGeometry args={[1,0.28,32,128]} />
