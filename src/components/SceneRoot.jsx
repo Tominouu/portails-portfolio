@@ -367,17 +367,6 @@ export default function SceneRoot({ onOpenPortal, activePortal, onClosePortal, a
         onWarpComplete={onWarpComplete}
       />
 
-      {/* Overlay UI */}
-      {activePortal && (
-        <Html center>
-          <OverlayPanel 
-            portalId={activePortal} 
-            onClose={handleClosePortal}
-            isVisible={!!activePortal}
-          />
-        </Html>
-      )}
-
       {/* Contrôles */}
       <OrbitControls 
         enablePan={false} 
