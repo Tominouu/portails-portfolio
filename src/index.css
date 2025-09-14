@@ -54,6 +54,21 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.panel {
+  width:min(920px,94%);
+  max-height:86%;
+  overflow:auto;
+  padding:20px;
+  border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  color:#e6f7ff;
+  pointer-events:auto;
+  backdrop-filter: blur(12px);
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
